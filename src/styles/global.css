@@ -26,3 +26,13 @@
   --glass: rgba(35, 48, 112, 0.48);
 }
 
+
+@keyframes project-enter {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+@keyframes project-exit {
+  from { transform: translateY(0); }
+  to { transform: translateY(-100%); }
+}

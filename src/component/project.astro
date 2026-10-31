@@ -1,0 +1,82 @@
+---
+const projects = [
+  { number: "01", title: "Project Alpha", category: "Data Science", color: "from-[#334c67] via-[#8c9c96] to-[#d7c9aa]", accent: "#d8c5a2" },
+  { number: "02", title: "Project Beta", category: "Software Development", color: "from-[#504e69] via-[#a49d9a] to-[#ded7c8]", accent: "#c3b7b4" },
+  { number: "03", title: "Project Gamma", category: "Data Science", color: "from-[#273e55] via-[#718d99] to-[#c6c7bd]", accent: "#acbfc2" },
+  { number: "04", title: "Project Delta", category: "Software Development", color: "from-[#5a534c] via-[#a89b83] to-[#e4d7bd]", accent: "#d7bfa0" },
+];
+---
+
+<section id="projects" aria-labelledby="projects-title" class="relative isolate min-h-svh overflow-hidden bg-snow bg-(image:--gradient-white-glow) text-ink">
+  <div class="relative z-10 flex flex-wrap items-start justify-between gap-4 px-6 pt-8 sm:px-10 lg:px-14 lg:pt-12">
+    <div>
+      <h2 id="projects-title" class="mt-3 text-3xl font-medium tracking-[-0.05em] sm:text-5xl">Selected Projects</h2>
+    </div>
+  </div>
+
+  <div class="mt-10 grid min-h-[65svh] grid-cols-2 gap-3 px-6 pb-6 sm:gap-4 sm:px-10 lg:absolute lg:inset-x-0 lg:bottom-0 lg:top-44 lg:mt-0 lg:grid-cols-4 lg:px-14 lg:pb-10">
+    {projects.map((project) => (
+      <button type="button" data-project={project.number} class="project-card group relative flex min-h-64 cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border border-white/70 bg-white/25 p-5 text-left text-ink shadow-[0_8px_28px_rgba(75,72,65,0.08),inset_0_1px_0_rgba(255,255,255,0.8)] transition-colors duration-300 data-[phase=enter]:text-white backdrop-blur-xl backdrop-saturate-150 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-ink sm:p-7 lg:min-h-0 lg:p-8" aria-label={`Lihat detail ${project.title}`}>
+        <span aria-hidden="true" class:list={["absolute inset-0 bg-linear-to-br [transform:translateY(100%)] group-data-[phase=enter]:animate-[project-enter_800ms_ease-out_forwards] group-data-[phase=exit]:animate-[project-exit_700ms_ease-in_forwards] motion-reduce:animate-none motion-reduce:group-data-[phase=enter]:[transform:translateY(0)] after:absolute after:inset-0 after:bg-[#080d24]/55", project.color]}></span>
+        <span class="relative flex items-start justify-between gap-3 text-[10px] font-semibold tracking-[0.16em] uppercase"><span>{project.number} / {project.category}</span></span>
+        <span class="relative"><span class="mb-3 block text-xs opacity-70">View project</span><span class="block max-w-56 text-2xl leading-[0.98] font-medium tracking-[-0.05em] sm:text-3xl lg:text-4xl">{project.title}</span></span>
+      </button>
+    ))}
+  </div>
+
+  {projects.map((project) => (
+    <dialog id={`project-${project.number}`} data-lenis-prevent aria-labelledby={`project-title-${project.number}`} class="project-dialog fixed inset-0 m-0 h-dvh max-h-none w-screen max-w-none overflow-y-auto bg-[#efeee9] p-0 text-[#20221f] backdrop:bg-[#11152b]/70">
+      <div class="sticky top-3 z-20 flex justify-end py-3 px-2 md:px-12 pointer-events-none">
+        <button type="button" data-close-project class="pointer-events-auto rounded-full border border-black/20 bg-white/80 px-4 py-2 text-sm font-medium backdrop-blur-md transition-colors hover:bg-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black" aria-label="Kembali ke daftar proyek"><span aria-hidden="true">←</span> Back</button>
+      </div>
+      <div class="-mt-16">
+        <div class:list={["flex min-h-[65svh] flex-col justify-between bg-linear-to-br p-7 pt-24 sm:p-12 sm:pt-24", project.color]}>
+          <p class="text-xs font-semibold tracking-[0.18em] uppercase">{project.number} / {project.category}</p>
+          <h3 id={`project-title-${project.number}`} class="max-w-3xl text-5xl leading-[0.9] font-medium tracking-[-0.06em] sm:text-7xl lg:text-8xl">{project.title}<span class="opacity-40">.</span></h3>
+        </div>
+        <div class="grid gap-8 p-7 sm:p-12 md:grid-cols-[1fr_2fr] md:gap-16">
+          <div><p class="text-xs font-semibold tracking-[0.18em] uppercase text-black/45">Project overview</p><p class="mt-4 text-sm">{project.category}<br />Lorem ipsum / 2026</p></div>
+          <div class="max-w-2xl space-y-6 text-base leading-relaxed text-black/70 sm:text-lg">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          </div>
+        </div>
+      </div>
+    </dialog>
+  ))}
+</section>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>("[data-project]").forEach((button) => {
+    const dialog = document.querySelector<HTMLDialogElement>(`#project-${button.dataset.project}`);
+    let openedWithPointer = false;
+
+    button.addEventListener("pointerenter", () => { button.dataset.phase = "enter"; });
+    button.addEventListener("pointerleave", () => {
+      if (!button.matches(":focus-visible")) button.dataset.phase = "exit";
+    });
+    button.addEventListener("focus", () => {
+      if (button.matches(":focus-visible")) button.dataset.phase = "enter";
+    });
+    button.addEventListener("blur", () => {
+      if (!button.matches(":hover")) button.dataset.phase = "exit";
+    });
+    button.addEventListener("click", (event) => {
+      openedWithPointer = event.detail > 0;
+      dialog?.showModal();
+    });
+    dialog?.addEventListener("close", () => {
+      if (openedWithPointer) {
+        if (document.activeElement === button) button.blur();
+        delete button.dataset.phase;
+      }
+    });
+  });
+  document.querySelectorAll<HTMLDialogElement>(".project-dialog").forEach((dialog) => {
+    dialog.querySelector<HTMLButtonElement>("[data-close-project]")?.addEventListener("click", () => dialog.close());
+    dialog.addEventListener("click", (event) => {
+      if (event.target === dialog) dialog.close();
+    });
+  });
+</script>

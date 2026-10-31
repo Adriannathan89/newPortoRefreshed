@@ -6,10 +6,10 @@ interface Props {
 const { name = "Adrian Nathanael" } = Astro.props;
 ---
 
-<header class="absolute inset-x-4 top-5 z-10 flex justify-center sm:top-6">
+<header data-site-header class="fixed inset-x-4 top-5 z-50 flex justify-center sm:top-6">
   <div
-    class="group relative flex max-w-full items-center rounded-[2rem] isolate border border-[#a8bdf5]/50 bg-transparent
-    text-mist shadow-[0_8px_32px_rgba(12,19,85,0.3),inset_0_1px_2px_rgba(220,230,255,0.55),inset_0_-1px_3px_rgba(114,146,225,0.3)] 
+    class="group relative flex max-w-full items-center rounded-[2rem] isolate border border-[#a8bdf5]/50 bg-transparent backdrop-blur-md [[data-light]_&]:border-ink/20 [[data-light]_&]:bg-white/40
+    text-mist [[data-light]_&]:text-ink shadow-[0_8px_32px_rgba(12,19,85,0.3),inset_0_1px_2px_rgba(220,230,255,0.55),inset_0_-1px_3px_rgba(114,146,225,0.3)] 
     transition-[width,background-color,box-shadow] duration-500 ease-out 
     hover:shadow-[0_12px_40px_rgba(12,19,85,0.35),inset_0_1px_2px_rgba(220,230,255,0.65),inset_0_-1px_3px_rgba(114,146,225,0.4)]"
   >
@@ -18,12 +18,12 @@ const { name = "Adrian Nathanael" } = Astro.props;
       aria-expanded="false"
       aria-controls="header-navigation"
       class="relative z-10 flex min-h-14 shrink-0 cursor-pointer items-center justify-center gap-2.5 rounded-full px-7
-        text-lg font-bold tracking-tight outline-offset-4 focus-visible:outline-2 focus-visible:outline-ink transition-colors hover:text-mist/90"
+        text-lg font-bold tracking-tight outline-offset-4 focus-visible:outline-2 focus-visible:outline-ink transition-colors hover:text-mist/90 [[data-light]_&]:hover:text-ink/80"
       aria-label={`Buka navigasi ${name}`}
     >
       <span>
         {name}
-        <span class="text-silver/80">.</span>
+        <span class="text-silver/80 [[data-light]_&]:text-ink/50">.</span>
       </span>
     </button>
 
@@ -39,15 +39,15 @@ const { name = "Adrian Nathanael" } = Astro.props;
         <nav class="flex items-center gap-1">
           <a
             href="/"
-            class="rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-mist/90 transition-colors hover:bg-white/20 hover:text-mist
+            class="rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-mist/90 [[data-light]_&]:text-ink/80 transition-colors hover:bg-white/20 hover:text-mist [[data-light]_&]:hover:text-ink
               focus-visible:outline-2 focus-visible:outline-ink"
           >
             Beranda
           </a>
           <a
             href="#main"
-            class="rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-mist/90 transition-colors
-              hover:bg-white/20 hover:text-mist focus-visible:outline-2 focus-visible:outline-ink"
+            class="rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-mist/90 [[data-light]_&]:text-ink/80 transition-colors
+              hover:bg-white/20 hover:text-mist [[data-light]_&]:hover:text-ink focus-visible:outline-2 focus-visible:outline-ink"
           >
             Jelajahi
           </a>
@@ -55,7 +55,7 @@ const { name = "Adrian Nathanael" } = Astro.props;
         <div class="flex items-center gap-2 px-2">
           <a
             href="mailto:hello@example.com"
-            class="group/contact flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-mist/90 transition-colors hover:bg-white/20 hover:text-mist focus-visible:outline-2 focus-visible:outline-ink"
+            class="group/contact flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-mist/90 [[data-light]_&]:text-ink/80 transition-colors hover:bg-white/20 hover:text-mist [[data-light]_&]:hover:text-ink focus-visible:outline-2 focus-visible:outline-ink"
             aria-label="Kirim email"
           >
             Kontak
@@ -68,6 +68,26 @@ const { name = "Adrian Nathanael" } = Astro.props;
 </header>
 
 <script>
+  const header = document.querySelector<HTMLElement>("[data-site-header]");
+  const projects = document.querySelector<HTMLElement>("#projects");
+  let pending = false;
+  const updateHeader = () => {
+    pending = false;
+    if (!header || !projects) return;
+    const headerCenter = header.getBoundingClientRect().top + header.offsetHeight / 2;
+    const bounds = projects.getBoundingClientRect();
+    header.toggleAttribute("data-light", bounds.top <= headerCenter && bounds.bottom > headerCenter);
+  };
+  const scheduleUpdate = () => {
+    if (!pending) {
+      pending = true;
+      requestAnimationFrame(updateHeader);
+    }
+  };
+  window.addEventListener("scroll", scheduleUpdate, { passive: true });
+  window.addEventListener("resize", scheduleUpdate);
+  updateHeader();
+
   const button = document.querySelector<HTMLButtonElement>(
     '[aria-controls="header-navigation"]',
   );
