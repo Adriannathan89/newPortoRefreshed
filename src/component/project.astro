@@ -1,9 +1,33 @@
 ---
 const projects = [
-  { number: "01", title: "Project Alpha", category: "Data Science", color: "from-[#334c67] via-[#8c9c96] to-[#d7c9aa]", accent: "#d8c5a2" },
-  { number: "02", title: "Project Beta", category: "Software Development", color: "from-[#504e69] via-[#a49d9a] to-[#ded7c8]", accent: "#c3b7b4" },
-  { number: "03", title: "Project Gamma", category: "Data Science", color: "from-[#273e55] via-[#718d99] to-[#c6c7bd]", accent: "#acbfc2" },
-  { number: "04", title: "Project Delta", category: "Software Development", color: "from-[#5a534c] via-[#a89b83] to-[#e4d7bd]", accent: "#d7bfa0" },
+  {
+    number: "01", title: "Furnace-rs", category: "Application Framework", color: "from-[#334c67] via-[#8c9c96] to-[#d7c9aa]",
+    tagline: "A modular Rust framework for building structured, extensible applications.",
+    paragraphs: ["Furnace-rs provides a structured foundation for Rust services. Its framework-neutral core organizes application components, configuration, dependency wiring, and lifecycle management, while optional integrations support HTTP, gRPC, and WebSocket applications.", "The framework validates application registrations at startup and provides request validation, authentication, and error handling. Optional SeaORM integration supports persistence, while a CLI helps developers create, inspect, and run applications."],
+    stack: ["Rust", "Tokio", "Axum", "Tower", "gRPC", "WebSockets", "SeaORM", "PostgreSQL", "JWT"],
+    links: [{ label: "GitHub", href: "https://github.com/Adriannathan89/furnace-rs" }, { label: "crates.io", href: "https://crates.io/crates/furnace-rs" }, { label: "Benchmark", href: "https://github.com/Adriannathan89/furnace-rs/blob/main/benchmark/PERFORMANCE.md" }],
+  },
+  {
+    number: "02", title: "DDP0 Grader", category: "Developer Tooling", color: "from-[#504e69] via-[#a49d9a] to-[#ded7c8]",
+    tagline: "A concurrent grading service for Python submissions.",
+    paragraphs: ["DDP0 Grader is a backend service for evaluating Python submissions against hidden tests. A Gin API receives submissions and records their status, while Redis queues grading jobs for a pool of Go workers.", "Workers retrieve test files from S3-compatible storage, prepare a temporary workspace, and run evaluations in Docker containers. The service records outcomes and execution information so submission results can be retrieved through the API."],
+    stack: ["Go", "Gin", "Redis", "PostgreSQL", "GORM", "Docker", "Python", "pytest", "S3"],
+    evidenceTitle: "Architecture", evidence: "A queue and worker pool separate submission handling from evaluation, allowing grading jobs to be processed concurrently.",
+    links: [{ label: "GitHub", href: "https://github.com/Adriannathan89/ddp0_grader" }],
+  },
+  {
+    number: "03", title: "Tracker", category: "Personal Finance", color: "from-[#273e55] via-[#718d99] to-[#c6c7bd]",
+    tagline: "Personal finance tracking with intelligent transaction categorization.",
+    paragraphs: ["Tracker brings financial records, shared debts, and personal profiles together across web and Android clients. Its Rust backend uses Furnace-rs and PostgreSQL, while a transaction classifier helps assign primary and secondary categories from transaction descriptions.", "The classifier is trained offline using text and transaction features. Its learned parameters are loaded by the Rust backend for native inference without a separate Python inference server. Users can correct categories and provide feedback for later training."],
+    stack: ["Rust", "Furnace-rs", "Angular", "TypeScript", "Flutter", "Dart", "PostgreSQL", "SeaORM", "Python", "scikit-learn"],
+    evidenceTitle: "Model validation", evidence: "The included model was trained on 15,226 samples and recorded five-fold mean accuracy of 98.80% for primary categories and 95.55% for secondary categories. These are cross-validation results on the recorded dataset, not a guarantee for future transactions.",
+    links: [{ label: "GitHub", href: "https://github.com/Adriannathan89/tracker" }],
+  },
+  {
+    number: "04", title: "Coming Soon", category: "In Development", color: "from-[#5a534c] via-[#a89b83] to-[#e4d7bd]",
+    tagline: "A new project is currently in development.",
+    paragraphs: ["More details will be shared when it is ready."], stack: [], evidenceTitle: "", evidence: "", links: [],
+  },
 ];
 ---
 
@@ -18,7 +42,7 @@ const projects = [
     {projects.map((project) => (
       <button type="button" data-project={project.number} class="project-card group relative flex min-h-64 cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border border-white/70 bg-white/25 p-5 text-left text-ink shadow-[0_8px_28px_rgba(75,72,65,0.08),inset_0_1px_0_rgba(255,255,255,0.8)] transition-colors duration-300 data-[phase=enter]:text-white backdrop-blur-xl backdrop-saturate-150 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-ink sm:p-7 lg:min-h-0 lg:p-8" aria-label={`Lihat detail ${project.title}`}>
         <span aria-hidden="true" class:list={["absolute inset-0 bg-linear-to-br [transform:translateY(100%)] group-data-[phase=enter]:animate-[project-enter_800ms_ease-out_forwards] group-data-[phase=exit]:animate-[project-exit_700ms_ease-in_forwards] motion-reduce:animate-none motion-reduce:group-data-[phase=enter]:[transform:translateY(0)] after:absolute after:inset-0 after:bg-[#080d24]/55", project.color]}></span>
-        <span class="relative flex items-start justify-between gap-3 text-[10px] font-semibold tracking-[0.16em] uppercase"><span>{project.number} / {project.category}</span></span>
+        <span></span>
         <span class="relative"><span class="mb-3 block text-xs opacity-70">View project</span><span class="block max-w-56 text-2xl leading-[0.98] font-medium tracking-[-0.05em] sm:text-3xl lg:text-4xl">{project.title}</span></span>
       </button>
     ))}
@@ -31,15 +55,25 @@ const projects = [
       </div>
       <div class="-mt-16">
         <div class:list={["flex min-h-[65svh] flex-col justify-between bg-linear-to-br p-7 pt-24 sm:p-12 sm:pt-24", project.color]}>
-          <p class="text-xs font-semibold tracking-[0.18em] uppercase">{project.number} / {project.category}</p>
+          <p class="max-w-xl text-base leading-relaxed text-white sm:text-xl">{project.tagline}</p>
           <h3 id={`project-title-${project.number}`} class="max-w-3xl text-5xl leading-[0.9] font-medium tracking-[-0.06em] sm:text-7xl lg:text-8xl">{project.title}<span class="opacity-40">.</span></h3>
         </div>
         <div class="grid gap-8 p-7 sm:p-12 md:grid-cols-[1fr_2fr] md:gap-16">
-          <div><p class="text-xs font-semibold tracking-[0.18em] uppercase text-black/45">Project overview</p><p class="mt-4 text-sm">{project.category}<br />Lorem ipsum / 2026</p></div>
+          <div class="space-y-8">
+            <div><p class="text-xs font-semibold tracking-[0.18em] uppercase text-black/45">Project overview</p><p class="mt-3 text-sm">{project.category}</p></div>
+            {project.stack.length > 0 && <div><p class="text-xs font-semibold tracking-[0.18em] uppercase text-black/45">Technology</p><div class="mt-4 flex flex-wrap gap-2">{project.stack.map((technology) => <span class="rounded-full border border-black/15 px-3 py-1 text-xs">{technology}</span>)}</div></div>}
+            {project.links.length > 0 && <div>
+              <p class="text-xs font-semibold tracking-[0.18em] uppercase text-black/45">Links</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                {project.links.map((link) => <a class="inline-flex size-11 items-center justify-center rounded-full border border-black/15 transition-colors hover:bg-black hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black" href={link.href} target="_blank" rel="noopener noreferrer" aria-label={`${link.label} (opens in a new tab)`} title={link.label}>
+                  {link.label === "GitHub" ? <svg aria-hidden="true" viewBox="0 0 24 24" class="size-5 fill-current"><path d="M12 .7a11.3 11.3 0 0 0-3.57 22.02c.57.1.77-.25.77-.55v-2.1c-3.15.68-3.81-1.33-3.81-1.33-.51-1.31-1.25-1.66-1.25-1.66-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.17 1.74 1.17 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.51-.29-5.16-1.26-5.16-5.59 0-1.24.44-2.25 1.16-3.04-.12-.28-.5-1.44.11-3 0 0 .95-.3 3.11 1.16a10.8 10.8 0 0 1 5.66 0c2.16-1.46 3.11-1.16 3.11-1.16.61 1.56.23 2.72.11 3 .72.79 1.16 1.8 1.16 3.04 0 4.34-2.65 5.3-5.18 5.58.41.36.77 1.04.77 2.1v3.09c0 .3.2.66.78.55A11.3 11.3 0 0 0 12 .7Z"/></svg> : link.label === "crates.io" ? <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" class="size-5"><path d="m12 2 9 5v10l-9 5-9-5V7l9-5Z"/><path d="m3 7 9 5 9-5M12 12v10M7.5 4.5l9 5"/></svg> : <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="size-5"><path d="M4 20h16M6 16v-4m6 4V5m6 11V9"/></svg>}
+                </a>)}
+              </div>
+            </div>}
+          </div>
           <div class="max-w-2xl space-y-6 text-base leading-relaxed text-black/70 sm:text-lg">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
-            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            {project.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+            {project.evidence && <div class="border-t border-black/15 pt-7"><h4 class="mb-3 text-xs font-semibold tracking-[0.18em] uppercase text-black/45">{project.evidenceTitle}</h4><p>{project.evidence}</p></div>}
           </div>
         </div>
       </div>
