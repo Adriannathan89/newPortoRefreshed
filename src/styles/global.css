@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+@theme {
+  --color-porcelain: #ffffff;
+  --color-snow: #fafafa;
+  --color-pearl: #f3f4f5;
+  --color-mist: #e5e7eb;
+  --color-silver: #cbd0d6;
+  --color-ink: #18181b;
+  --color-glass: var(--glass);
+}
+
+:root {
+  --gradient-white: linear-gradient(
+    135deg,
+    #f2f0ec 0%,
+    #e8e6e1 48%,
+    #d8d7d3 100%
+  );
+  --gradient-white-soft: linear-gradient(180deg, #f2f0ec 0%, #e2e0db 100%);
+  --gradient-white-glow:
+    radial-gradient(ellipse at 20% 10%, rgba(255, 253, 248, 0.55), transparent 55%),
+    radial-gradient(ellipse at 80% 85%, rgba(205, 204, 198, 0.3), transparent 50%),
+    linear-gradient(135deg, #eeece7 0%, #e5e3de 50%, #d8d7d2 100%);
+
+  --glass: rgba(35, 48, 112, 0.48);
+}
+

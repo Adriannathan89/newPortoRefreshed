@@ -1,0 +1,67 @@
+---
+import "lenis/dist/lenis.css";
+import "../styles/global.css";
+import Header from "../component/Header.astro";
+import Hero from "../component/Hero.astro";
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Astro + Tailwind CSS</title>
+  </head>
+  <body class="min-h-screen bg-snow bg-(image:--gradient-white-glow) text-mist">
+    <Header />
+    <main id="main" class="bg-[linear-gradient(115deg,#17066b_0%,#280b8b_35%,#1673b0_70%,#c7bdc0_100%)]">
+      <div class="morph-panel"><Hero /></div>
+      <div class="morph-panel"><Hero /></div>
+    </main>
+  </body>
+</html>
+
+<script>
+  import Lenis from "lenis";
+  import { gsap } from "gsap";
+  import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  const main = document.querySelector<HTMLElement>("#main");
+  const panels = gsap.utils.toArray<HTMLElement>(".morph-panel");
+  const media = gsap.matchMedia();
+
+  if (main && panels.length > 1) {
+    media.add("(prefers-reduced-motion: no-preference)", () => {
+      const lenis = new Lenis({ anchors: true, wheelMultiplier: 1.5, lerp: 0.12 });
+      const updateLenis = (time: number) => lenis.raf(time * 1000);
+      lenis.on("scroll", ScrollTrigger.update);
+      gsap.ticker.add(updateLenis);
+      gsap.ticker.lagSmoothing(0);
+      panels.forEach((panel) => {
+        const section = panel.querySelector("section");
+        if (!section) return;
+
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: panel,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            invalidateOnRefresh: true,
+          },
+          defaults: { ease: "none" },
+        })
+          .fromTo(section, { scale: 0.97, borderRadius: "1.5rem" }, { scale: 1, borderRadius: "0rem", duration: 1 })
+          .to(section, { scale: 0.97, borderRadius: "1.5rem", duration: 1 });
+      });
+
+      return () => {
+        gsap.ticker.remove(updateLenis);
+        lenis.destroy();
+        gsap.ticker.lagSmoothing(500, 33);
+      };
+    });
+  }
+</script>

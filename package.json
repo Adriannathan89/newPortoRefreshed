@@ -1,0 +1,26 @@
+{
+  "name": "new-porto",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "bun --bun astro dev",
+    "start": "bun --bun astro dev",
+    "build": "bun --bun astro build",
+    "preview": "bun --bun astro preview",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "astro": "7.4.4",
+    "gsap": "^3.15.0",
+    "lenis": "^1.3.27",
+    "tailwindcss": "^4.0.0"
+  },
+  "packageManager": "bun@1.3.14",
+  "devDependencies": {
+    "prettier": "^3.9.10",
+    "prettier-plugin-astro": "^1.1.2",
+    "prettier-plugin-tailwindcss": "latest"
+  }
+}
