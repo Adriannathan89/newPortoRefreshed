@@ -71,7 +71,7 @@ const { name = "Adrian Nathanael" } = Astro.props;
 
 <script>
   const header = document.querySelector<HTMLElement>("[data-site-header]");
-  const lightSections = document.querySelectorAll<HTMLElement>("#projects, [data-header-light]");
+  const lightSections = document.querySelectorAll<HTMLElement>("#projects");
   let pending = false;
   const updateHeader = () => {
     pending = false;
