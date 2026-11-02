@@ -40,8 +40,8 @@ const projects = [
 
   <div class="mt-10 grid min-h-[65svh] grid-cols-2 gap-3 px-6 pb-6 sm:gap-4 sm:px-10 lg:absolute lg:inset-x-0 lg:bottom-0 lg:top-44 lg:mt-0 lg:grid-cols-4 lg:px-14 lg:pb-10">
     {projects.map((project) => (
-      <button type="button" data-project={project.number} class="project-card group relative flex min-h-64 cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border border-white/70 bg-white/25 p-5 text-left text-ink shadow-[0_8px_28px_rgba(75,72,65,0.08),inset_0_1px_0_rgba(255,255,255,0.8)] transition-colors duration-300 data-[phase=enter]:text-white backdrop-blur-xl backdrop-saturate-150 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-ink sm:p-7 lg:min-h-0 lg:p-8" aria-label={`Lihat detail ${project.title}`}>
-        <span aria-hidden="true" class:list={["absolute inset-0 bg-linear-to-br [transform:translateY(100%)] group-data-[phase=enter]:animate-[project-enter_800ms_ease-out_forwards] group-data-[phase=exit]:animate-[project-exit_700ms_ease-in_forwards] motion-reduce:animate-none motion-reduce:group-data-[phase=enter]:[transform:translateY(0)] after:absolute after:inset-0 after:bg-[#080d24]/55", project.color]}></span>
+      <button type="button" data-project={project.number} class="project-card group relative flex min-h-64 cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border border-white/70 bg-white/25 p-5 text-left text-ink shadow-[0_8px_28px_rgba(75,72,65,0.08),inset_0_1px_0_rgba(255,255,255,0.8)] transition-colors duration-300 backdrop-blur-xl backdrop-saturate-150 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-ink sm:p-7 lg:min-h-0 lg:p-8" aria-label={`Lihat detail ${project.title}`}>
+        <span aria-hidden="true" class:list={["absolute inset-0 bg-linear-to-br [transform:translateY(100%)] group-data-[phase=enter]:animate-[project-enter_800ms_ease-out_forwards] group-data-[phase=exit]:animate-[project-exit_700ms_ease-in_forwards] motion-reduce:animate-none motion-reduce:group-data-[phase=enter]:[transform:translateY(0)]", project.color]}></span>
         <span></span>
         <span class="relative"><span class="mb-3 block text-xs opacity-70">View project</span><span class="block max-w-56 text-2xl leading-[0.98] font-medium tracking-[-0.05em] sm:text-3xl lg:text-4xl">{project.title}</span></span>
       </button>
@@ -82,9 +82,34 @@ const projects = [
 </section>
 
 <script>
+  import { gsap } from "gsap";
+
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   document.querySelectorAll<HTMLButtonElement>("[data-project]").forEach((button) => {
     const dialog = document.querySelector<HTMLDialogElement>(`#project-${button.dataset.project}`);
+    if (!dialog) return;
     let openedWithPointer = false;
+    let closing = false;
+
+    const cardClip = () => {
+      const rect = button.getBoundingClientRect();
+      const top = Math.max(0, rect.top);
+      const left = Math.max(0, rect.left);
+      const right = Math.max(0, window.innerWidth - rect.right);
+      const bottom = Math.max(0, window.innerHeight - rect.bottom);
+      return `inset(${top}px ${right}px ${bottom}px ${left}px round 16px)`;
+    };
+
+    const closeDialog = () => {
+      if (closing || !dialog.open) return;
+      if (reducedMotion.matches) { dialog.close(); return; }
+      closing = true;
+      gsap.killTweensOf(dialog);
+      gsap.to(dialog, {
+        clipPath: cardClip(), duration: 0.8, ease: "power3.inOut",
+        onComplete: () => { dialog.close(); gsap.set(dialog, { clearProps: "clipPath" }); closing = false; },
+      });
+    };
 
     button.addEventListener("pointerenter", () => { button.dataset.phase = "enter"; });
     button.addEventListener("pointerleave", () => {
@@ -98,19 +123,20 @@ const projects = [
     });
     button.addEventListener("click", (event) => {
       openedWithPointer = event.detail > 0;
-      dialog?.showModal();
+      dialog.scrollTop = 0;
+      dialog.showModal();
+      if (!reducedMotion.matches) {
+        gsap.fromTo(dialog, { clipPath: cardClip() }, { clipPath: "inset(0px 0px 0px 0px round 0px)", duration: 1, ease: "power3.inOut", clearProps: "clipPath" });
+      }
     });
-    dialog?.addEventListener("close", () => {
+    dialog.querySelector<HTMLButtonElement>("[data-close-project]")?.addEventListener("click", closeDialog);
+    dialog.addEventListener("cancel", (event) => { event.preventDefault(); closeDialog(); });
+    dialog.addEventListener("click", (event) => { if (event.target === dialog) closeDialog(); });
+    dialog.addEventListener("close", () => {
       if (openedWithPointer) {
         if (document.activeElement === button) button.blur();
         delete button.dataset.phase;
       }
-    });
-  });
-  document.querySelectorAll<HTMLDialogElement>(".project-dialog").forEach((dialog) => {
-    dialog.querySelector<HTMLButtonElement>("[data-close-project]")?.addEventListener("click", () => dialog.close());
-    dialog.addEventListener("click", (event) => {
-      if (event.target === dialog) dialog.close();
     });
   });
 </script>
