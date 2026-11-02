@@ -1,8 +1,6 @@
 services:
   portfolio:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ghcr.io/adriannathan89/newportorefreshed:latest
     restart: unless-stopped
     ports:
       - "${PORTFOLIO_PORT:-4321}:80"
