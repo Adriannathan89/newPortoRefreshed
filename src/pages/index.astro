@@ -3,6 +3,8 @@ import "lenis/dist/lenis.css";
 import "../styles/global.css";
 import Header from "../component/Header.astro";
 import Hero from "../component/Hero.astro";
+import Exploring from "../component/Exploring.astro";
+import Overview from "../component/Overview.astro";
 import Project from "../component/project.astro";
 import Awards from "../component/Awards.astro";
 ---
@@ -16,8 +18,17 @@ import Awards from "../component/Awards.astro";
   </head>
   <body class="min-h-screen bg-snow bg-(image:--gradient-white-glow) text-mist">
     <Header />
-    <main id="main" class="bg-[linear-gradient(135deg,#172554_0%,#0b1026_100%)]">
-      <div class="morph-panel"><Hero /></div>
+    <main id="main" class="bg-[linear-gradient(135deg,#49302f_0%,#21171d_55%,#120e14_100%)]">
+      <div id="intro" class="relative isolate">
+        <div aria-hidden="true" class="pointer-events-none sticky top-0 z-0 -mb-[100svh] h-svh overflow-hidden bg-[#271820]">
+          <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_22%,rgba(255,195,143,0.65),transparent_36%),radial-gradient(ellipse_at_22%_74%,rgba(144,66,61,0.55),transparent_42%),linear-gradient(160deg,#b17b70_0%,#ae796e_35%,#673c40_67%,#171624_100%)]"></div>
+          <div class="absolute inset-0 bg-[linear-gradient(180deg,rgba(30,18,25,0.12)_0%,rgba(25,16,24,0.45)_50%,rgba(12,12,20,0.86)_100%)]"></div>
+          <div data-portal-frame class="absolute bottom-[-2%] left-1/2 h-[76%] w-[min(62vw,34rem)] -translate-x-1/2 rounded-t-full border-[10px] border-[#d8c1b6] [transform:scale(4)] [transform-origin:center_bottom] shadow-[0_0_0_120vmax_#8c6d67,inset_0_0_24px_rgba(30,20,25,0.3)] sm:border-[14px]"></div>
+        </div>
+        <div class="morph-panel relative z-10"><Hero /></div>
+        <div class="morph-panel relative z-10"><Exploring /></div>
+        <div class="morph-panel relative z-10"><Overview /></div>
+      </div>
       <div class="morph-panel"><Project /></div>
       <div class="morph-panel"><Awards /></div>
     </main>
@@ -72,7 +83,19 @@ import Awards from "../component/Awards.astro";
       lenis.on("scroll", ScrollTrigger.update);
       gsap.ticker.add(updateLenis);
       gsap.ticker.lagSmoothing(0);
-      panels.forEach((panel) => {
+      const hero = document.querySelector<HTMLElement>('[aria-label="Beranda"]');
+      const intro = document.querySelector<HTMLElement>("#intro");
+      const portalFrame = document.querySelector<HTMLElement>("[data-portal-frame]");
+      const heroCopy = hero?.querySelector<HTMLElement>("[data-hero-copy]");
+      if (hero && heroCopy && intro) {
+        if (portalFrame) gsap.fromTo(portalFrame, { scale: 4 }, { scale: 1, transformOrigin: "center bottom", ease: "none", scrollTrigger: { trigger: intro, start: "top top", end: "bottom bottom", scrub: true } });
+        gsap.to(heroCopy, { y: -65, opacity: 0, ease: "none", scrollTrigger: { trigger: hero, start: "top top", end: "bottom center", scrub: true } });
+      }
+      gsap.utils.toArray<HTMLElement>("[data-intro-reveal]").forEach((element) => {
+        gsap.from(element, { y: 32, opacity: 0, duration: 0.8, ease: "power2.out", scrollTrigger: { trigger: element, start: "top 88%", once: true } });
+      });
+      panels.forEach((panel, index) => {
+        if (index < 3) return;
         const section = panel.querySelector("section");
         if (!section) return;
 

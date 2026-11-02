@@ -32,11 +32,11 @@ const { name = "Adrian Nathanael" } = Astro.props;
       data-lenis-prevent
       aria-label="Navigasi utama"
       class="relative z-10 invisible min-w-0 w-0 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden opacity-0 transition-[width,opacity] duration-500 
-      ease-out group-hover:visible group-hover:w-[420px] group-hover:opacity-100 group-focus-within:visible 
-      group-focus-within:w-[420px] group-focus-within:opacity-100 group-data-[open]:visible group-data-[open]:w-[420px] 
+      ease-out group-hover:visible group-hover:w-[500px] group-hover:opacity-100 group-focus-within:visible 
+      group-focus-within:w-[500px] group-focus-within:opacity-100 group-data-[open]:visible group-data-[open]:w-[500px] 
       group-data-[open]:opacity-100 motion-reduce:transition-none"
     >
-      <div class="flex w-[420px] items-center justify-between pl-4 pr-3">
+      <div class="flex w-[500px] items-center justify-between pl-4 pr-3">
         <nav class="flex items-center gap-1">
           <a
             href="#main"
@@ -45,6 +45,7 @@ const { name = "Adrian Nathanael" } = Astro.props;
           >
             Home
           </a>
+          <a href="#exploring" class="rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-mist/90 [[data-light]_&]:text-ink/80 transition-colors hover:bg-white/20 hover:text-mist [[data-light]_&]:hover:text-ink focus-visible:outline-2 focus-visible:outline-ink">Explore</a>
           <a
             href="#projects"
             class="rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-mist/90 [[data-light]_&]:text-ink/80 transition-colors
@@ -71,7 +72,7 @@ const { name = "Adrian Nathanael" } = Astro.props;
 
 <script>
   const header = document.querySelector<HTMLElement>("[data-site-header]");
-  const lightSections = document.querySelectorAll<HTMLElement>("#projects");
+  const lightSections = document.querySelectorAll<HTMLElement>("[data-header-light]");
   let pending = false;
   const updateHeader = () => {
     pending = false;
