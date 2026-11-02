@@ -60,7 +60,7 @@ const { name = "Adrian Nathanael" } = Astro.props;
             class="group/contact flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-mist/90 [[data-light]_&]:text-ink/80 transition-colors hover:bg-white/20 hover:text-mist [[data-light]_&]:hover:text-ink focus-visible:outline-2 focus-visible:outline-ink"
             aria-label="Kirim email"
           >
-            Kontak
+            Contact
             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="opacity-70 transition-transform group-hover/contact:rotate-12"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
           </a>
         </div>
@@ -71,14 +71,17 @@ const { name = "Adrian Nathanael" } = Astro.props;
 
 <script>
   const header = document.querySelector<HTMLElement>("[data-site-header]");
-  const projects = document.querySelector<HTMLElement>("#projects");
+  const lightSections = document.querySelectorAll<HTMLElement>("#projects, [data-header-light]");
   let pending = false;
   const updateHeader = () => {
     pending = false;
-    if (!header || !projects) return;
+    if (!header) return;
     const headerCenter = header.getBoundingClientRect().top + header.offsetHeight / 2;
-    const bounds = projects.getBoundingClientRect();
-    header.toggleAttribute("data-light", bounds.top <= headerCenter && bounds.bottom > headerCenter);
+    const isLight = Array.from(lightSections).some((section) => {
+      const bounds = section.getBoundingClientRect();
+      return bounds.top <= headerCenter && bounds.bottom > headerCenter;
+    });
+    header.toggleAttribute("data-light", isLight);
   };
   const scheduleUpdate = () => {
     if (!pending) {
