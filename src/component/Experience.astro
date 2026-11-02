@@ -16,9 +16,9 @@ import { experiences } from "../data/experiences";
   {experiences.map((experience, index) => (
     <div class="morph-panel relative z-10" data-no-morph>
       <section aria-labelledby={`experience-${index}`} class="flex min-h-svh items-center px-6 pt-28 pb-16 text-white sm:px-10 lg:px-16">
-        <div class="mx-auto grid w-full max-w-7xl gap-10 lg:grid-cols-2 lg:items-center lg:gap-20">
+        <div class="mx-auto grid w-full max-w-7xl gap-7 sm:gap-10 lg:grid-cols-2 lg:items-center lg:gap-20">
           <div class:list={["min-w-0", index % 2 === 0 && "lg:order-2 lg:text-right"]}>
-            <h2 id={`experience-${index}`} class="mt-5 text-[clamp(3.5rem,8vw,8rem)] leading-[0.9] font-medium tracking-[-0.065em]">{experience.organization}</h2>
+            <h2 id={`experience-${index}`} class="mt-5 text-[clamp(2.5rem,8vw,8rem)] break-words leading-[0.9] font-medium tracking-[-0.065em]">{experience.organization}</h2>
             <p class="mt-5 text-lg font-medium text-[#f4c9b1] sm:text-xl">{experience.role}</p>
             <a href={experience.website} target="_blank" rel="noopener noreferrer" class="mt-7 inline-flex items-center gap-3 rounded-full border border-white/40 bg-white/10 px-5 py-3 text-sm font-medium backdrop-blur-md transition-colors hover:bg-white/20 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white">{experience.cta}</a>
           </div>

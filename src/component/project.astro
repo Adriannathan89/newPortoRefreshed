@@ -38,9 +38,9 @@ const projects = [
     </div>
   </div>
 
-  <div class="mt-10 grid min-h-[65svh] grid-cols-2 gap-3 px-6 pb-6 sm:gap-4 sm:px-10 lg:absolute lg:inset-x-0 lg:bottom-0 lg:top-44 lg:mt-0 lg:grid-cols-4 lg:px-14 lg:pb-10">
+  <div class="mt-10 grid min-h-[65svh] grid-cols-1 gap-3 min-[420px]:grid-cols-2 px-6 pb-6 sm:gap-4 sm:px-10 lg:absolute lg:inset-x-0 lg:bottom-0 lg:top-44 lg:mt-0 lg:grid-cols-4 lg:px-14 lg:pb-10">
     {projects.map((project) => (
-      <button type="button" data-project={project.number} class="project-card group relative flex min-h-64 cursor-pointer flex-col justify-between overflow-hidden rounded-2xl border border-white/20 bg-white/10 p-5 text-left text-white shadow-[0_8px_28px_rgba(0,0,0,0.16),inset_0_1px_0_rgba(255,255,255,0.2)] transition-colors duration-300 data-[phase=enter]:text-ink backdrop-blur-xl backdrop-saturate-150 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white sm:p-7 lg:min-h-0 lg:p-8" aria-label={`Lihat detail ${project.title}`}>
+      <button type="button" data-project={project.number} class="project-card group relative flex min-h-44 cursor-pointer min-[420px]:min-h-64 flex-col justify-between overflow-hidden rounded-2xl border border-white/20 bg-white/10 p-5 text-left text-white shadow-[0_8px_28px_rgba(0,0,0,0.16),inset_0_1px_0_rgba(255,255,255,0.2)] transition-colors duration-300 data-[phase=enter]:text-ink backdrop-blur-xl backdrop-saturate-150 focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-4px] focus-visible:outline-white sm:p-7 lg:min-h-0 lg:p-8" aria-label={`Lihat detail ${project.title}`}>
         <span aria-hidden="true" class:list={["absolute inset-0 bg-linear-to-br [transform:translateY(100%)] group-data-[phase=enter]:animate-[project-enter_800ms_ease-out_forwards] group-data-[phase=exit]:animate-[project-exit_700ms_ease-in_forwards] motion-reduce:animate-none motion-reduce:group-data-[phase=enter]:[transform:translateY(0)]", project.color]}></span>
         <span></span>
         <span class="relative"><span class="mb-3 block text-xs opacity-70">View project</span><span class="block max-w-56 text-2xl leading-[0.98] font-medium tracking-[-0.05em] sm:text-3xl lg:text-4xl">{project.title}</span></span>
@@ -56,7 +56,7 @@ const projects = [
       <div class="-mt-16">
         <div class:list={["flex min-h-[65svh] flex-col justify-between bg-linear-to-br p-7 pt-24 sm:p-12 sm:pt-24", project.color]}>
           <p class="max-w-xl text-base leading-relaxed text-white sm:text-xl">{project.tagline}</p>
-          <h3 id={`project-title-${project.number}`} class="max-w-3xl text-5xl leading-[0.9] font-medium tracking-[-0.06em] sm:text-7xl lg:text-8xl">{project.title}<span class="opacity-40">.</span></h3>
+          <h3 id={`project-title-${project.number}`} class="max-w-3xl text-4xl break-words sm:text-5xl leading-[0.9] font-medium tracking-[-0.06em] sm:text-7xl lg:text-8xl">{project.title}<span class="opacity-40">.</span></h3>
         </div>
         <div class="grid gap-8 p-7 sm:p-12 md:grid-cols-[1fr_2fr] md:gap-16">
           <div class="space-y-8">

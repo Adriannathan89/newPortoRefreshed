@@ -25,19 +25,17 @@ const { name = "Adrian Nathanael" } = Astro.props;
         {name}
         <span class="text-silver/80 [[data-light]_&]:text-ink/50">.</span>
       </span>
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" class="size-4 md:hidden"><path d="M4 8h16M4 16h16" /></svg>
     </button>
 
     <div
       id="header-navigation"
       data-lenis-prevent
       aria-label="Navigasi utama"
-      class="relative z-10 invisible min-w-0 w-0 overflow-x-auto overflow-y-hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden opacity-0 transition-[width,opacity] duration-500
-      ease-out group-hover:visible group-hover:w-[600px] group-hover:opacity-100 group-focus-within:visible
-      group-focus-within:w-[600px] group-focus-within:opacity-100 group-data-[open]:visible group-data-[open]:w-[600px]
-      group-data-[open]:opacity-100 group-data-[contact-active]:visible group-data-[contact-active]:w-[600px] group-data-[contact-active]:opacity-100 motion-reduce:transition-none"
+      class="header-navigation invisible absolute top-[calc(100%+0.5rem)] left-1/2 z-10 w-[min(90vw,24rem)] -translate-x-1/2 overflow-hidden rounded-2xl border border-white/25 bg-[#211921]/90 p-2 opacity-0 shadow-xl backdrop-blur-xl transition-[width,opacity] duration-500 group-data-[open]:visible group-data-[open]:opacity-100 group-data-[contact-active]:visible group-data-[contact-active]:opacity-100 motion-reduce:transition-none md:relative md:top-auto md:left-auto md:min-w-0 md:w-0 md:translate-x-0 md:overflow-x-auto md:overflow-y-hidden md:rounded-none md:border-0 md:bg-transparent md:p-0 md:shadow-none md:backdrop-blur-none md:[scrollbar-width:none] md:[&::-webkit-scrollbar]:hidden md:group-hover:visible md:group-hover:w-[600px] md:group-hover:opacity-100 md:group-focus-within:visible md:group-focus-within:w-[600px] md:group-focus-within:opacity-100 md:group-data-[open]:w-[600px] md:group-data-[contact-active]:w-[600px]"
     >
-      <div class="flex w-[600px] items-center justify-between pl-4 pr-3">
-        <nav class="flex items-center gap-1">
+      <div class="flex w-full flex-col items-stretch gap-1 md:w-[600px] md:flex-row md:items-center md:justify-between md:gap-0 md:pl-4 md:pr-3">
+        <nav class="grid grid-cols-2 gap-1 md:flex md:items-center">
           <a
             href="#main"
             class="rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-mist/90 [[data-light]_&]:text-ink/80 transition-colors hover:bg-white/20 hover:text-mist [[data-light]_&]:hover:text-ink
@@ -56,7 +54,7 @@ const { name = "Adrian Nathanael" } = Astro.props;
           </a>
           <a href="#awards" class="rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-mist/90 [[data-light]_&]:text-ink/80 transition-colors hover:bg-white/20 hover:text-mist [[data-light]_&]:hover:text-ink focus-visible:outline-2 focus-visible:outline-ink">Awards</a>
         </nav>
-        <div class="flex items-center gap-2 px-2">
+        <div class="flex items-center gap-2 border-t border-white/15 pt-1 md:border-0 md:px-2 md:pt-0">
           <button type="button" data-contact-toggle aria-expanded="false" aria-controls="contact-links" aria-haspopup="true" class="flex items-center gap-2 rounded-full px-3 py-2 text-sm font-medium whitespace-nowrap text-mist/90 [[data-light]_&]:text-ink/80 transition-colors hover:bg-white/20 hover:text-mist [[data-light]_&]:hover:text-ink focus-visible:outline-2 focus-visible:outline-ink">
             Contact <span aria-hidden="true">⌄</span>
           </button>
@@ -107,6 +105,7 @@ const { name = "Adrian Nathanael" } = Astro.props;
     if (open) {
       const anchor = contactToggle.getBoundingClientRect();
       const bounds = header.getBoundingClientRect();
+      contactMenu.style.top = `${anchor.bottom - bounds.top}px`;
       contactMenu.style.left = `${Math.max(0, Math.min(anchor.right - bounds.left - 208, bounds.width - 208))}px`;
     }
     contactMenu.hidden = !open;
@@ -138,5 +137,13 @@ const { name = "Adrian Nathanael" } = Astro.props;
     if (!container) return;
     const open = container.toggleAttribute("data-open");
     button.setAttribute("aria-expanded", String(open));
+    if (!open) setContactOpen(false);
+  });
+  header?.querySelector("#header-navigation nav")?.addEventListener("click", (event) => {
+    if (window.innerWidth < 768 && (event.target as Element).closest("a")) {
+      button?.parentElement?.removeAttribute("data-open");
+      button?.setAttribute("aria-expanded", "false");
+      setContactOpen(false);
+    }
   });
 </script>
